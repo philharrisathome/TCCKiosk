@@ -111,7 +111,13 @@ Copy `pikiosk_1.img` to partition 1. Copy `pikiosk_2.img` to partition 2.
     Exec=sh -c "xset s off -dpms s noblank"
     ```
 
-12. ### Turn screen off outside hours
+12. ### Schedule period webpage update from git
+    Use crontab -e (here for the East Wing):
+    ```
+    0 23 * * * wget -O ~/Documents/webpage/index.html https://raw.githubusercontent.com/philharrisathome/TCCKiosk/refs/heads/main/TCCEastWingEvents.html
+    ```
+
+13. ### Turn screen off outside hours
     Use crontab -e:
     ```
     0 23 * * * export DISPLAY=:0 && /usr/bin/xset dpms force off
