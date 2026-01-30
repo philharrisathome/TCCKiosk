@@ -231,52 +231,87 @@ def extract_schedule(session, sites, bookings, resources):
 
 #------------------------------------------------------------------------------
 
+# Create an HTML table representing the schedule and insert it into the specified HTML page template
 def build_schedule_page(schedule, rooms, template_file, title, save_as):
     # Assumes the schedule is sorted and all events are within a single day
 
+    time_interval = 30 * 60  # seconds
+
+    # Calculate the number of table columns between the two datetime objects
+    def column_count(earlier, later):
+        return int((later - earlier).total_seconds() / time_interval)
+
     table_html = StringIO()
 
-    # Find the earliest & latest events
-    if len(schedule) > 0:
-        start_time = schedule[0]['starts']
-        end_time = schedule[-1]['ends']
+    # Determine the earliest & latest displayed events
+    # With stupid mode selector
+    if False and len(schedule) > 0:
+        # Earliest booking to latest booking, start rounded to hour boundary
+        start_time = schedule[0]['starts'].replace(minute=0, second=0, microsecond=0)
+        end_time = max(schedule, key=lambda x: x['ends'])['ends']
+    elif True:
+        # Fixed duration from current hour boundary
+        start_time = datetime.now(timezone.utc).replace(minute=0, second=0, microsecond=0)
+        end_time = start_time + timedelta(hours = 6)
     else:
+        # Fixed time range
         start_time = datetime.combine(datetime.today(), time(hour=9, minute=0), timezone.utc)
         end_time = datetime.combine(datetime.today(), time(hour=18, minute=0), timezone.utc)
-    time_interval = 30 * 60  # seconds
+    max_cols = column_count(start_time, end_time)
 
     print("<table>", file=table_html)
 
     # Generate the header
     print("  <tr>\n    ", end="", file=table_html)
     t = start_time
-    while t <= end_time:
+    while t < end_time:
         print(f"<th>{t.strftime('%H:%M')}</th>", end="", file=table_html)
         t += timedelta(seconds=time_interval)
     print("\n  </tr>", file=table_html)
 
-    # Generate a row for each resource
+    # Generate a row for each room (resource)
     num_rows = 0
     for r in rooms:
+        # Get the events for this room
+        events_in_room = [x for x in schedule if x['resource'] == r]
+        # Only generate rows for rooms that have bookings
+        if not events_in_room:
+            continue
         num_rows = num_rows + 1
-        num_cols = 0
         print("  <tr>", file=table_html)
         print(f"    <!-- {r} -->", file=table_html)
-        for e in [x for x in schedule if x['resource'] == r]:
+
+        num_cols = 0
+        for e in events_in_room:
+            start = column_count(start_time, e['starts'])
+            duration = column_count(e['starts'], e['ends'])
+            # Truncate any events starting before start of schedule
+            if start < 0:
+                duration = start + duration
+                start = 0
+            # Skip events beyond the current period
+            if start >= max_cols:
+                continue
+            # Truncate any events ending after the end of schedule
+            duration = min(duration, max_cols - start)
+            # Skip events in the past
+            if duration <= 0:
+                continue
+            
+            # Here (0 <= start < max_cols) and (0 < duration <= max_cols-start)
             # Create empty cells before event, if needed
-            gap = (e['starts'] - start_time).total_seconds() / time_interval - num_cols
+            gap = start - num_cols
             if gap > 0:
-                print("    " + "<td class='empty'></td>" * int(gap), file=table_html)
+                print("    " + "<td class='empty'></td>" * gap, file=table_html)
             # Create the event itself
-            duration = (e['ends'] - e['starts']).total_seconds() / time_interval
             print(f"    <!-- {e['name']} in {r} from {e['starts'].strftime('%H:%M')} to {e['ends'].strftime('%H:%M')} -->", file=table_html)
             print(f"    <td class='room-{num_rows}' colspan='{duration:.0f}'>{e['name']}<span>{r}</span></td>", file=table_html)
             num_cols = num_cols + gap + duration
 
         # Create empty cells at end of day, if needed
-        gap = (end_time - start_time).total_seconds() / time_interval - num_cols + 1
+        gap = max_cols - num_cols
         if gap > 0:
-            print("    " + "<td class='empty'></td>" * int(gap), file=table_html)
+            print("    " + "<td class='empty'></td>" * gap, file=table_html)
         print("  </tr>", file=table_html)
 
     print("</table>", file=table_html)
