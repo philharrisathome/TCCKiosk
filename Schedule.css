@@ -10,7 +10,7 @@ h1 {
 }
 
 h2 {
-	font-size: 2rem;
+	font-size: 3rem;
 	color: #808080;
 }
 
@@ -20,62 +20,72 @@ h3 {
 	font-weight: normal;
 }
 
-.header {
-	padding: 0 4rem 0 4rem;
+/* Used in the header and footer banners */
+.header_footer {
+	padding: 0 2rem 0 2rem;
 	margin-left: auto;
 	margin-right: auto;
 	width: auto;
 }
 
 table {
-	padding: 2rem 0 2rem 0;
+	padding: 1rem 0 1rem 0;
 	table-layout: fixed;
 	width: 100%;
-	max-width: 50rem;
 	margin-left: auto;
 	margin-right: auto;
+	border-spacing: 0.2rem 0.5rem;
 }
 
+/* Controls the height of each row */
 tr {
-	height: 80px;
+	height: 5rem;
 }
 
+/* Basic cell formatting for the table */
 td, th {
 	font-size: 1.5rem;
-	width: 80px;
+	width: 4rem;
 	white-space: nowrap;
 	overflow: hidden;
 }
 
-tr th:nth-child(even) {
-	color: #ccc;
+/* Default formatting for timescale on the table heading */
+table th {
+	text-align: left;
+	font-size: 2.0rem;
+	padding: 0.5rem 0.5rem;
 	font-weight: normal;
+	border-right: thin dotted #aaa;
 }
 
-table th,
+/* Every half-hour of the table heading */
+tr th:nth-child(even) {
+	color: #aaa;
+	font-weight: normal;
+	border-right: thick solid #888;
+}
+
+/* Default formatting for each event */
 table td {
 	padding: 0.5rem 1rem;
-}
-
-table th {
-	font-weight: normal;
-	border-right: thin dotted #ccc;
-}
-
-table td {
-	font-size: 1.5rem;
+	font-size: 1.8rem;
 	font-weight: bold;
-	line-height: 1.4;
-	border-radius: 0.75rem;
+	line-height: 1.8rem;
+	border-radius: 1.0rem;
 	transition: opacity 0.3s ease;
 }
 
+/* 2nd line of each event */
 table td>span {
-	font-size: 0.9em;
+	font-size: 1.4rem;
 	font-weight: normal;
 	display: block;
 	width: 100%;
 }
+
+/*===========================================================================*/
+/* Color for each event */
 
 .empty {
 	border-radius: 0;
@@ -129,3 +139,5 @@ table td>span {
 .room-12 {
 	background-color: #26C6DA;
 }
+
+/* ==========================================================================*/
