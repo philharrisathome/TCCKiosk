@@ -1,3 +1,8 @@
+html {
+	/* Everything scales relative to this font-size */
+	font-size: 0.95vh;
+}
+
 body {
 	text-align: center;
 	min-height: 100vh;
