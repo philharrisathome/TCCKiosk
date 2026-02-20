@@ -299,9 +299,16 @@ def build_schedule_page(schedule, rooms, template_file, title, save_as):
                 continue
             
             # Here (0 <= start < max_cols) and (0 < duration <= max_cols-start)
-            # Create empty cells before event, if needed
+            # Calculate the gap between the end of the previous event and the start of this one
             gap = start - num_cols
-            if gap > 0:
+            if gap < 0:
+                # This event overlaps with the previous event - shift start
+                start = start + gap
+                duration = duration + gap
+                if duration <= 0:
+                     continue
+            elif gap > 0:
+                # Create empty cells before event, if needed
                 print("    " + "<td class='empty'></td>" * gap, file=table_html)
             # Create the event itself
             print(f"    <!-- {e['name']} in {r} from {e['starts'].strftime('%H:%M')} to {e['ends'].strftime('%H:%M')} -->", file=table_html)
@@ -312,6 +319,14 @@ def build_schedule_page(schedule, rooms, template_file, title, save_as):
         gap = max_cols - num_cols
         if gap > 0:
             print("    " + "<td class='empty'></td>" * gap, file=table_html)
+        print("  </tr>", file=table_html)
+
+    # Create empty rows, if needed
+    gap = len(rooms) - num_rows
+    for _ in range(gap):
+        print("  <tr>", file=table_html)
+        print("    <!-- Padding -->", file=table_html)
+        print("    " + "<td class='empty'></td>" * max_cols, file=table_html)
         print("  </tr>", file=table_html)
 
     print("</table>", file=table_html)
