@@ -1,0 +1,153 @@
+html {
+	/* Everything scales relative to this font-size */
+	font-size: 0.95vh;
+    background-color: #404040;
+    color:ghostwhite;
+}
+
+body {
+	text-align: center;
+	min-height: 100vh;
+	padding: 2rem;
+	font-family: -system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+h1 {
+	font-size: 5rem;
+}
+
+h2 {
+	font-size: 3rem;
+	color: #aaa;
+}
+
+h3 {
+	font-size: 1.5rem;
+	color: #aaa;
+	font-weight: normal;
+}
+
+/* Used in the header and footer banners */
+.header_footer {
+	padding: 0 2rem 0 2rem;
+	margin-left: auto;
+	margin-right: auto;
+	width: auto;
+}
+
+table {
+	padding: 1rem 0 1rem 0;
+	table-layout: fixed;
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+	border-spacing: 0.2rem 0.5rem;
+}
+
+/* Controls the height of each row */
+tr {
+	height: 5rem;
+}
+
+/* Basic cell formatting for the table */
+td, th {
+	font-size: 2.0rem;
+	line-height: 2.0rem;
+	width: 4rem;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+/* Default formatting for timescale on the table heading */
+table th {
+	text-align: left;
+	padding: 0.5rem 0.5rem;
+	font-weight: normal;
+	border-right: thin dotted #aaa;
+}
+
+/* Every half-hour of the table heading */
+tr th:nth-child(even) {
+	color: #aaa;
+	font-weight: normal;
+	border-right: thick solid #888;
+}
+
+/* Default formatting for each event */
+table td {
+	padding: 0.5rem 1rem;
+	font-weight: bold;
+	border-radius: 1.0rem;
+	transition: opacity 0.3s ease;
+}
+
+/* 2nd line of each event */
+table td>span {
+	font-size: 1.4rem;
+	font-weight: normal;
+	display: block;
+	width: 100%;
+}
+
+/* More contrast for images */
+img {
+    filter: brightness(1.5);    
+}
+
+/*===========================================================================*/
+/* Color for each event */
+
+.empty {
+	border-radius: 0;
+	border-right: thin dotted #ccc;
+}
+
+.room-1 {
+	background-color: #FFA726;
+}
+
+.room-2 {
+	background-color: #9CCC65;
+}
+
+.room-3 {
+	background-color: #FF8A65;
+}
+
+.room-4 {
+	background-color: #B3E5FC;
+}
+
+.room-5 {
+	background-color: #81D4FA;
+}
+
+.room-6 {
+	background-color: #26C6DA;
+}
+
+.room-7 {
+	background-color: #FFA726;
+}
+
+.room-8 {
+	background-color: #9CCC65;
+}
+
+.room-9 {
+	background-color: #FF8A65;
+}
+
+.room-10 {
+	background-color: #B3E5FC;
+}
+
+.room-11 {
+	background-color: #81D4FA;
+}
+
+.room-12 {
+	background-color: #26C6DA;
+}
+
+/* ==========================================================================*/
