@@ -46,6 +46,7 @@ eastwing_resources = [
     ]
 
 schedule_template_file = "ScheduleTemplate.html"
+stylesheet = "Schedule-dark.css"
 output_path = "./"
 
 #------------------------------------------------------------------------------
@@ -271,6 +272,7 @@ def build_schedule_page(schedule, rooms, template_file, title, save_as):
 
     # Generate a row for each room (resource)
     num_rows = 0
+    colors = {}
     for r in rooms:
         # Get the events for this room
         events_in_room = [x for x in schedule if x['resource'] == r]
@@ -310,9 +312,12 @@ def build_schedule_page(schedule, rooms, template_file, title, save_as):
             elif gap > 0:
                 # Create empty cells before event, if needed
                 print("    " + "<td class='empty'></td>" * gap, file=table_html)
+            # Create a unique color for this event
+            color = colors.setdefault(e['name'], f"oklch(70% 0.15 {10 + len(colors) * 50}deg)")
+            # print(f"{e['name']} -> {colors[e['name']]}")
             # Create the event itself
             print(f"    <!-- {e['name']} in {r} from {e['starts'].strftime('%H:%M')} to {e['ends'].strftime('%H:%M')} -->", file=table_html)
-            print(f"    <td class='room-{num_rows}' colspan='{duration:.0f}'>{e['name']}<span>{r}</span></td>", file=table_html)
+            print(f"    <td style='background-color: {color}' colspan='{duration:.0f}'>{e['name']}<span>{r}</span></td>", file=table_html)
             num_cols = num_cols + gap + duration
 
         # Create empty cells at end of day, if needed
@@ -334,6 +339,7 @@ def build_schedule_page(schedule, rooms, template_file, title, save_as):
     # Create the complete page
     with open(template_file) as f: 
         output = f.read()
+    output = output.replace("*** Insert stylesheet here ***", stylesheet)
     output = output.replace("*** Insert title here ***", title)
     output = output.replace("*** Insert today's date here ***", datetime.today().strftime("%A, %d %B %Y"))
     output = output.replace("*** Insert timestamp here ***", datetime.today().ctime())
