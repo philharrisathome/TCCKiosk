@@ -11,7 +11,7 @@ body {
 }
 
 h1 {
-	font-size: 4rem;
+	font-size: 5rem;
 }
 
 h2 {
@@ -20,7 +20,7 @@ h2 {
 }
 
 h3 {
-	font-size: 1rem;
+	font-size: 1.5rem;
 	color: #808080;
 	font-weight: normal;
 }
@@ -49,7 +49,8 @@ tr {
 
 /* Basic cell formatting for the table */
 td, th {
-	font-size: 1.5rem;
+	font-size: 2.0rem;
+	line-height: 2.0rem;
 	width: 4rem;
 	white-space: nowrap;
 	overflow: hidden;
@@ -58,7 +59,6 @@ td, th {
 /* Default formatting for timescale on the table heading */
 table th {
 	text-align: left;
-	font-size: 2.0rem;
 	padding: 0.5rem 0.5rem;
 	font-weight: normal;
 	border-right: thin dotted #aaa;
@@ -74,9 +74,7 @@ tr th:nth-child(even) {
 /* Default formatting for each event */
 table td {
 	padding: 0.5rem 1rem;
-	font-size: 1.8rem;
 	font-weight: bold;
-	line-height: 1.8rem;
 	border-radius: 1.0rem;
 	transition: opacity 0.3s ease;
 }
