@@ -1,7 +1,7 @@
 html {
 	/* Everything scales relative to this font-size */
 	font-size: 0.95vh;
-    background-color: #404040;
+    background-color: #222;
     color:ghostwhite;
 }
 
@@ -23,8 +23,8 @@ h2 {
 
 h3 {
 	font-size: 1.5rem;
-	color: #aaa;
 	font-weight: normal;
+	color: #aaa;
 }
 
 /* Used in the header and footer banners */
@@ -36,9 +36,9 @@ h3 {
 }
 
 table {
-	padding: 1rem 0 1rem 0;
 	table-layout: fixed;
 	width: 100%;
+	padding: 1rem 0 1rem 0;
 	margin-left: auto;
 	margin-right: auto;
 	border-spacing: 0.2rem 0.5rem;
@@ -51,39 +51,41 @@ tr {
 
 /* Basic cell formatting for the table */
 td, th {
+	font-weight: normal;
 	font-size: 2.0rem;
 	line-height: 2.0rem;
 	width: 4rem;
+	padding: 0.5rem;
+    padding-left: 0.25rem;
+    padding-right: 10px;
 	white-space: nowrap;
 	overflow: hidden;
+	color: #aaa;
 }
 
 /* Default formatting for timescale on the table heading */
 table th {
 	text-align: left;
-	padding: 0.5rem 0.5rem;
-	font-weight: normal;
-	border-right: thin dotted #aaa;
+	border-right: 1px solid;
 }
 
 /* Every half-hour of the table heading */
 tr th:nth-child(even) {
-	color: #aaa;
-	font-weight: normal;
-	border-right: thick solid #888;
+    padding-right: 0px;
+	border-right: 10px solid;
 }
 
 /* Default formatting for each event */
 table td {
-	padding: 0.5rem 1rem;
 	font-weight: bold;
+	color: #fff;
 	border-radius: 1.0rem;
 	transition: opacity 0.3s ease;
 }
 
 /* 2nd line of each event */
 table td>span {
-	font-size: 1.4rem;
+	font-size: 1.6rem;
 	font-weight: normal;
 	display: block;
 	width: 100%;
@@ -99,7 +101,7 @@ img {
 
 .empty {
 	border-radius: 0;
-	border-right: thin dotted #ccc;
+	border-right: 1px dotted;
 }
 
 .room-1 {
