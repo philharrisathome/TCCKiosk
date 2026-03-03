@@ -303,15 +303,19 @@ def build_schedule_page(schedule, rooms, template_file, title, save_as):
             # Here (0 <= start < max_cols) and (0 < duration <= max_cols-start)
             # Calculate the gap between the end of the previous event and the start of this one
             gap = start - num_cols
+            # print(f"{num_rows}: num_cols={num_cols}, start={start}, duration={duration}, gap={gap}")
             if gap < 0:
                 # This event overlaps with the previous event - shift start
-                start = start + gap
+                start = start - gap
                 duration = duration + gap
+                gap = 0
+                # print(f"  fixed: num_cols={num_cols}, start={start}, duration={duration}, gap={gap}")
                 if duration <= 0:
                      continue
             elif gap > 0:
                 # Create empty cells before event, if needed
                 print("    " + "<td class='empty'></td>" * gap, file=table_html)
+            
             # Create a unique color for this event
             color = colors.setdefault(e['name'], f"oklch(70% 0.15 {10 + len(colors) * 50}deg)")
             # print(f"{e['name']} -> {colors[e['name']]}")
