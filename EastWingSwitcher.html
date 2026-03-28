@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" >
+
+    <head>
+        <meta charset="UTF-8">
+        <title>The Carraig Centre &ndash; Events Today</title>
+    </head>
+
+    <style>
+        html, body {
+            font-size: 0.95vh;
+            background-color: #222;
+            color:ghostwhite;
+        }
+        iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-style: hidden;
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+
+    <body>
+        <iframe id="changingIframe" src="EastWingSchedule.html" scrolling="no"></iframe>
+    </body>
+
+    <script>
+        function changeIframeSrc(index)
+        {
+            var iframeid = document.getElementById('changingIframe');
+            iframeid.setAttribute('src', sourceList[index]);
+        }
+
+        var i = 0;
+        var sourceList = ['EastWingSchedule.html', 'WestWingSchedule.html'];
+        setInterval(function() { changeIframeSrc(i++); if(i == sourceList.length) { i = 0; } }, 10000); 
+    </script>
+
+</html>
