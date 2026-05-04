@@ -10,6 +10,8 @@ from pprint import pprint
 
 #------------------------------------------------------------------------------
 
+local_tz = datetime.now().astimezone().tzinfo
+
 api = "https://api.churchsuite.com/v2/"
 api_request_count = 0
 
@@ -248,22 +250,23 @@ def build_schedule_page(schedule, rooms, template_file, title, save_as):
     # With stupid mode selector
     if False and len(schedule) > 0:
         # Earliest booking to latest booking, start rounded to hour boundary
-        start_time = schedule[0]['starts'].replace(minute=0, second=0, microsecond=0)
-        end_time = max(schedule, key=lambda x: x['ends'])['ends']
+        start_time = schedule[0]['starts'].replace(minute=0, second=0, microsecond=0).astimezone(local_tz)
+        end_time = (max(schedule, key=lambda x: x['ends'])['ends']).astimezone(local_tz)
     elif True:
         # Fixed duration from current hour boundary
-        start_time = datetime.now(timezone.utc).replace(minute=0, second=0, microsecond=0)
+        start_time = datetime.now(local_tz).replace(minute=0, second=0, microsecond=0)
         end_time = start_time + timedelta(hours = 6)
     else:
         # Fixed time range
-        start_time = datetime.combine(datetime.today(), time(hour=9, minute=0), timezone.utc)
-        end_time = datetime.combine(datetime.today(), time(hour=18, minute=0), timezone.utc)
+        start_time = datetime.combine(datetime.today(), time(hour=9, minute=0), local_tz)
+        end_time = datetime.combine(datetime.today(), time(hour=18, minute=0), local_tz)
     max_cols = column_count(start_time, end_time)
 
     print("<table>", file=table_html)
 
     # Generate the header
     print("  <tr>\n    ", end="", file=table_html)
+    print(f"<!-- Show schedule from {start_time.isoformat()} to {end_time.isoformat()} -->\n    ", end="", file=table_html)
     t = start_time
     while t < end_time:
         print(f"<th>{t.strftime('%H:%M')}</th>", end="", file=table_html)
@@ -320,7 +323,7 @@ def build_schedule_page(schedule, rooms, template_file, title, save_as):
             color = colors.setdefault(e['name'], f"oklch(70% 0.15 {10 + len(colors) * 50}deg)")
             # print(f"{e['name']} -> {colors[e['name']]}")
             # Create the event itself
-            print(f"    <!-- {e['name']} in {r} from {e['starts'].strftime('%H:%M')} to {e['ends'].strftime('%H:%M')} -->", file=table_html)
+            print(f"    <!-- {e['name']} in {r} from {e['starts'].astimezone(local_tz).isoformat()} to {e['ends'].astimezone(local_tz).isoformat()} -->", file=table_html)
             print(f"    <td style='background-color: {color}' colspan='{duration:.0f}'>{e['name']}<span>{r}</span></td>", file=table_html)
             num_cols = num_cols + gap + duration
 
